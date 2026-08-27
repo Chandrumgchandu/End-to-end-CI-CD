@@ -1,0 +1,32 @@
+name: Self Hosted Runner Test
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: [self-hosted, Linux, X64, devops-lab]
+
+    steps:
+      - name: Check runner
+        run: |
+          echo "Runner: $(hostname)"
+          echo "User: $(whoami)"
+          echo "OS:"
+          uname -a
+
+      - name: Check tools
+        run: |
+          java -version
+          docker --version
+          git --version
+          aws --version
+          kubectl version --client
+
+      - name: Check Docker
+        run: |
+          docker ps
+
+      - name: Check AWS
+        run: |
+          aws sts get-caller-identity
