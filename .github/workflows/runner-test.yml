@@ -1,32 +1,21 @@
-name: Self Hosted Runner Test
+name: Runner Validation
 
 on:
   workflow_dispatch:
 
 jobs:
-  test:
-    runs-on: [self-hosted, Linux, X64, devops-lab]
+  validate:
+    runs-on: self-hosted
 
     steps:
-      - name: Check runner
+      - name: System check
         run: |
-          echo "Runner: $(hostname)"
-          echo "User: $(whoami)"
-          echo "OS:"
-          uname -a
-
-      - name: Check tools
-        run: |
-          java -version
-          docker --version
+          hostname
+          whoami
           git --version
-          aws --version
-          kubectl version --client
-
-      - name: Check Docker
-        run: |
+          docker --version
           docker ps
 
-      - name: Check AWS
+      - name: Docker test
         run: |
-          aws sts get-caller-identity
+          docker run --rm hello-world
